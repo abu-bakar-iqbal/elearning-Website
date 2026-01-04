@@ -1,0 +1,250 @@
+@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap');
+
+:root {
+    --color-primary: #0a192f;
+    --color-primary-light: #112240;
+    --color-accent: #d4af37;
+    /* Gold */
+    --color-text: #ffffff;
+    --color-text-dim: #8892b0;
+    --color-glass: rgba(17, 34, 64, 0.75);
+    --color-glass-border: rgba(212, 175, 55, 0.3);
+    --font-main: 'Outfit', sans-serif;
+}
+
+body {
+    background-color: var(--color-primary);
+    color: var(--color-text);
+    font-family: var(--font-main);
+}
+
+/* Navbar Overrides */
+.navbar {
+    background-color: rgba(10, 25, 47, 0.9) !important;
+    backdrop-filter: blur(10px);
+    border-bottom: 1px solid rgba(212, 175, 55, 0.1);
+}
+
+.navbar-brand {
+    color: var(--color-text) !important;
+    font-weight: 700;
+    font-size: 1.5rem;
+}
+
+.navbar-brand span {
+    color: var(--color-accent);
+}
+
+.nav-link {
+    color: var(--color-text-dim) !important;
+    font-weight: 500;
+    transition: 0.3s;
+}
+
+.nav-link:hover,
+.nav-link.active {
+    color: var(--color-accent) !important;
+}
+
+/* Buttons */
+.btn-gold {
+    background-color: var(--color-accent);
+    color: var(--color-primary);
+    font-weight: 600;
+    border: none;
+    transition: transform 0.2s;
+}
+
+.btn-gold:hover {
+    background-color: #f1c40f;
+    color: var(--color-primary);
+    transform: translateY(-2px);
+}
+
+.btn-outline-gold {
+    border: 1px solid var(--color-accent);
+    color: var(--color-text);
+    font-weight: 600;
+    transition: all 0.3s;
+}
+
+.btn-outline-gold:hover {
+    background-color: var(--color-accent);
+    color: var(--color-primary);
+}
+
+/* Utilities */
+.text-gradient {
+    background: linear-gradient(135deg, var(--color-text) 0%, var(--color-accent) 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+.section-padding {
+    padding: 80px 0;
+}
+
+.bg-light-blue {
+    background-color: var(--color-primary-light);
+}
+
+/* Cards */
+.glass-card {
+    background: var(--color-primary-light);
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    border-radius: 12px;
+    padding: 2rem;
+    transition: transform 0.3s, box-shadow 0.3s;
+}
+
+.glass-card:hover {
+    transform: translateY(-5px);
+    border-color: rgba(212, 175, 55, 0.3);
+    box-shadow: 0 10px 30px rgba(10, 25, 47, 0.5);
+}
+
+.feature-icon {
+    width: 60px;
+    height: 60px;
+    background: rgba(212, 175, 55, 0.1);
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 1.5rem;
+    color: var(--color-accent);
+    font-size: 24px;
+}
+
+/* Footer */
+footer {
+    background-color: #020c1b;
+    border-top: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+footer h5 {
+    color: var(--color-text);
+    font-weight: 700;
+    margin-bottom: 1.5rem;
+}
+
+footer a {
+    color: var(--color-text-dim);
+    text-decoration: none;
+    transition: 0.3s;
+}
+
+footer a:hover {
+    color: var(--color-accent);
+}
+
+/* Hero */
+.hero-section {
+    min-height: 80vh;
+    display: flex;
+    align-items: center;
+    position: relative;
+    overflow: hidden;
+}
+
+.hero-glow {
+    position: absolute;
+    width: 300px;
+    height: 300px;
+    background: var(--color-accent);
+    filter: blur(150px);
+    opacity: 0.1;
+}
+
+/* Overrides for better visibility */
+.text-muted {
+    color: rgba(255, 255, 255, 0.7) !important;
+}
+
+/* Hero Rings Base Styles */
+.hero-ring-inner {
+    width: 300px;
+    height: 300px;
+}
+
+.hero-ring-outer {
+    width: 350px;
+    height: 350px;
+}
+
+/* Mobile Responsiveness */
+@media (max-width: 768px) {
+    .navbar-brand {
+        font-size: 1.25rem;
+    }
+
+    h1.display-3 {
+        font-size: 2.5rem;
+    }
+
+    .display-5 {
+        font-size: 2rem;
+    }
+
+    .section-padding {
+        padding: 40px 0;
+    }
+
+    .hero-section {
+        min-height: auto;
+        padding-top: 80px;
+        padding-bottom: 40px;
+        text-align: center;
+    }
+
+    .hero-section .d-flex {
+        justify-content: center;
+    }
+
+    .hero-glow {
+        display: none;
+        /* Hide heavy glows on mobile performance/layout */
+    }
+
+    .glass-card {
+        padding: 1.5rem;
+    }
+
+    form.d-flex {
+        flex-direction: column;
+    }
+
+    .btn-lg {
+        width: 100%;
+        margin-bottom: 10px;
+    }
+
+    .hero-section .d-flex>a {
+        width: auto;
+        /* Allow buttons to be natural width or full width if preferred, let's keep them auto but centered */
+        margin-bottom: 0;
+    }
+
+    /* Center the decorative icon on mobile */
+    .col-lg-6.text-center {
+        margin-top: 4rem;
+        /* More space for the top ring */
+        margin-bottom: 2rem;
+    }
+
+    /* Resize Hero Logo Elements for Mobile */
+    .display-1 {
+        font-size: 3.5rem;
+        /* Smaller icon */
+    }
+
+    .hero-ring-inner {
+        width: 200px;
+        height: 200px;
+    }
+
+    .hero-ring-outer {
+        width: 240px;
+        height: 240px;
+    }
+}

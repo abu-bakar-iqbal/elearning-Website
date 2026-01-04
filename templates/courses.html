@@ -1,0 +1,43 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<section class="section-padding mt-5 pt-5">
+    <div class="container pt-5">
+        <div class="text-center mb-5">
+            <h1 class="fw-bold mb-3">Explore Our <span class="text-gradient">Curriculum</span></h1>
+            <p class="text-muted lead">Comprehensive courses designed to take you from novice to expert.</p>
+        </div>
+
+        <div class="row g-4">
+            {% for course in courses %}
+            <div class="col-md-4">
+                <div class="glass-card h-100 p-0 overflow-hidden">
+                    <div class="position-relative" style="height: 200px;">
+                        <img src="{{ course.image }}" class="w-100 h-100 object-fit-cover" alt="{{ course.title }}">
+                        <div class="position-absolute bottom-0 start-0 p-3 w-100 bg-gradient-to-t">
+                            {% for tag in course.tags[:1] %}
+                            <span class="badge bg-gold text-dark">{{ tag }}</span>
+                            {% endfor %}
+                        </div>
+                    </div>
+                    <div class="p-4">
+                        <div class="d-flex justify-content-between mb-2 small text-gold">
+                            <span>{{ course.level }}</span>
+                            <span><i class="bi bi-star-fill"></i> {{ course.rating }}</span>
+                        </div>
+                        <h4 class="fw-bold text-white mb-2">{{ course.title }}</h4>
+                        <!-- Truncate description -->
+                        <p class="text-muted small mb-4">{{ course.description[:80] }}...</p>
+                        <a href="{{ url_for('course_detail', course_id=course.id) }}"
+                            class="text-gold text-decoration-none fw-bold">View Course <i
+                                class="bi bi-arrow-right"></i></a>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</section>
+
+{% endblock %}
