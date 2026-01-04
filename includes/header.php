@@ -1,3 +1,8 @@
+<?php
+if (session_status() === PHP_SESSION_NONE) {
+    session_start();
+}
+?>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -30,13 +35,28 @@
                     <li class="nav-item"><a class="nav-link" href="courses.php">Courses</a></li>
                     <li class="nav-item"><a class="nav-link" href="blog.php">Blog</a></li>
                     <li class="nav-item"><a class="nav-link" href="about.php">About</a></li>
-                    <li class="nav-item ms-lg-3">
-                        <a href="courses.php" class="btn btn-outline-gold px-4 rounded-pill">Get Started</a>
-                    </li>
+                    
+                    <?php if (isset($_SESSION['user_id'])): ?>
+                        <li class="nav-item dropdown ms-lg-3">
+                            <a class="nav-link dropdown-toggle text-gold fw-bold" href="#" role="button" data-bs-toggle="dropdown">
+                                <?php echo htmlspecialchars($_SESSION['username']); ?>
+                            </a>
+                            <ul class="dropdown-menu dropdown-menu-end bg-dark border-secondary">
+                                <li><a class="dropdown-item text-white" href="#">Profile</a></li>
+                                <li><hr class="dropdown-divider bg-secondary"></li>
+                                <li><a class="dropdown-item text-danger" href="logout.php">Logout</a></li>
+                            </ul>
+                        </li>
+                    <?php else: ?>
+                        <li class="nav-item ms-lg-2"><a class="nav-link" href="login.php">Login</a></li>
+                         <li class="nav-item ms-lg-2">
+                            <a href="register.php" class="btn btn-outline-gold px-4 rounded-pill">Sign Up</a>
+                        </li>
+                    <?php endif; ?>
                 </ul>
             </div>
         </div>
     </nav>
-
+    
     <!-- Main Content -->
     <main>
