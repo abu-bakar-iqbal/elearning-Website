@@ -3,3 +3,4 @@ email_error.log
 includes/mail_config.php
 __pycache__/
 *.pyc
+smtp_debug.log

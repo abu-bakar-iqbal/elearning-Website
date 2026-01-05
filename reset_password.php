@@ -4,41 +4,41 @@ include 'includes/db.php';
 include 'includes/header.php';
 
 $email = isset($_SESSION['reset_email']) ? $_SESSION['reset_email'] : '';
-if (!$email) {
-    header("Location: forgot_password.php");
-    exit();
-}
-
 $error = '';
+$success = isset($_SESSION['success_message']) ? $_SESSION['success_message'] : '';
+unset($_SESSION['success_message']);
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $code = $_POST['code'];
-    $pass = $_POST['password'];
+    $new_pass = $_POST['new_password'];
     $confirm_pass = $_POST['confirm_password'];
 
-    if ($pass !== $confirm_pass) {
+    if ($new_pass !== $confirm_pass) {
         $error = "Passwords do not match!";
     } else {
-        $stmt = $conn->prepare("SELECT id FROM users WHERE email = ? AND verification_code = ?");
-        $stmt->bind_param("ss", $email, $code);
+        $stmt = $conn->prepare("SELECT verification_code FROM users WHERE email = ?");
+        $stmt->bind_param("s", $email);
         $stmt->execute();
         $result = $stmt->get_result();
-
+        
         if ($result->num_rows > 0) {
-            $hashed_password = password_hash($pass, PASSWORD_DEFAULT);
-            
-            // Update password and clear code
-            $update = $conn->prepare("UPDATE users SET password = ?, verification_code = NULL WHERE email = ?");
-            $update->bind_param("ss", $hashed_password, $email);
-            
-            if ($update->execute()) {
-                $_SESSION['success_message'] = "Password reset successful! Please login.";
-                unset($_SESSION['reset_email']);
-                echo "<script>window.location.href='login.php';</script>";
-                exit();
+            $row = $result->fetch_assoc();
+            if ($row['verification_code'] === $code) {
+                // Update Password
+                $hashed = password_hash($new_pass, PASSWORD_DEFAULT);
+                $update = $conn->prepare("UPDATE users SET password = ?, verification_code = NULL WHERE email = ?");
+                $update->bind_param("ss", $hashed, $email);
+                
+                if ($update->execute()) {
+                    $_SESSION['success_message'] = "Password reset successful! Please login.";
+                    echo "<script>window.location.href='login.php';</script>";
+                    exit();
+                }
+            } else {
+                $error = "Invalid reset code!";
             }
         } else {
-            $error = "Invalid reset code!";
+            $error = "User not found (Session expired).";
         }
     }
 }
@@ -51,22 +51,22 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 <div class="glass-card p-5">
                     <h2 class="text-white fw-bold text-center mb-4">Reset Password</h2>
                     
+                    <?php if($success): ?>
+                        <div class="alert alert-success"><?php echo $success; ?></div>
+                    <?php endif; ?>
+
                     <?php if($error): ?>
                         <div class="alert alert-danger"><?php echo $error; ?></div>
                     <?php endif; ?>
 
-                    <div class="alert alert-info small">
-                        Check <code>email_log.txt</code> for the reset code.
-                    </div>
-
                     <form method="POST" action="">
                         <div class="mb-3">
-                            <label class="text-muted small mb-1">Reset Code</label>
-                            <input type="text" name="code" class="form-control bg-transparent text-white border-secondary" required>
+                            <label class="text-muted small mb-1">Enter Code from Email</label>
+                            <input type="text" name="code" class="form-control bg-transparent text-white border-secondary text-center letter-spacing-2" maxlength="6" required>
                         </div>
                         <div class="mb-3">
                             <label class="text-muted small mb-1">New Password</label>
-                            <input type="password" name="password" class="form-control bg-transparent text-white border-secondary" required>
+                            <input type="password" name="new_password" class="form-control bg-transparent text-white border-secondary" required>
                         </div>
                         <div class="mb-4">
                             <label class="text-muted small mb-1">Confirm New Password</label>

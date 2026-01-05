@@ -11,5 +11,6 @@ CREATE TABLE IF NOT EXISTS users (
     profile_image VARCHAR(255) DEFAULT 'default_avatar.png',
     bio TEXT,
     job_title VARCHAR(100),
+    role ENUM('student', 'admin', 'instructor') DEFAULT 'student',
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );

@@ -44,12 +44,12 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                     $_SESSION['alert_type'] = 'success';
                     $_SESSION['alert_message'] = 'Verification code sent to <strong>' . htmlspecialchars($email) . '</strong>';
                 } else {
-                    $error = "Warning: Could not send verification email. Please contact support.";
-                    // Only log to file if email failed, as a fallback for the user
-                    $log_entry = date('Y-m-d H:i:s') . " - Email: $email - Code: $code" . PHP_EOL;
-                    file_put_contents('email_log.txt', $log_entry, FILE_APPEND);
-                    $_SESSION['alert_type'] = 'warning';
-                    $_SESSION['alert_message'] = 'Could not send email automatically. Please check logs or contact admin.'; 
+                    $error = "Warning: Could not send verification email. Please check your network or contact support.";
+                    // Log error to hidden system log ONLY, no user fallback file
+                    error_log("Failed to send email to $email");
+                    
+                    $_SESSION['alert_type'] = 'danger';
+                    $_SESSION['alert_message'] = 'Email sending failed. Please try again later.'; 
                 }
 
                 $_SESSION['verify_email'] = $email;

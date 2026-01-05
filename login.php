@@ -11,7 +11,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $email = $_POST['email'];
     $password = $_POST['password'];
 
-    $stmt = $conn->prepare("SELECT id, username, password, is_verified FROM users WHERE email = ?");
+    $stmt = $conn->prepare("SELECT id, username, password, is_verified, role FROM users WHERE email = ?");
     $stmt->bind_param("s", $email);
     $stmt->execute();
     $result = $stmt->get_result();
@@ -24,6 +24,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 $_SESSION['user_id'] = $row['id'];
                 $_SESSION['username'] = $row['username'];
                 $_SESSION['email'] = $email;
+                $_SESSION['role'] = $row['role'];
                 echo "<script>window.location.href='index.php';</script>";
                 exit();
             } else {

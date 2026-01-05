@@ -53,6 +53,10 @@ if (session_status() === PHP_SESSION_NONE) {
                                         <small class="text-muted d-block text-truncate" style="max-width: 150px;"><?php echo isset($_SESSION['email']) ? htmlspecialchars($_SESSION['email']) : 'Student'; ?></small>
                                     </div>
                                 </li>
+                                <?php if(isset($_SESSION['role']) && $_SESSION['role'] === 'admin'): ?>
+                                    <li><a class="dropdown-item text-gold fw-bold h-effect" href="admin/dashboard.php"><i class="bi bi-speedometer2 me-2"></i>Admin Panel</a></li>
+                                    <li><hr class="dropdown-divider bg-secondary"></li>
+                                <?php endif; ?>
                                 <li><a class="dropdown-item text-white h-effect" href="profile.php"><i class="bi bi-person-fill me-2 text-gold"></i> My Profile</a></li>
                                 <li><a class="dropdown-item text-white h-effect" href="#"><i class="bi bi-gear-fill me-2 text-gold"></i> Settings</a></li>
                                 <li><a class="dropdown-item text-white h-effect" href="#"><i class="bi bi-question-circle-fill me-2 text-gold"></i> Help Center</a></li>

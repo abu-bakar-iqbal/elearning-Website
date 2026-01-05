@@ -59,14 +59,15 @@ class SMTP {
         $this->getResponse(); // Initial greeting
 
         // Handshake
-        $this->sendCommand("EHLO " . $_SERVER['SERVER_NAME']);
+        $serverName = isset($_SERVER['SERVER_NAME']) ? $_SERVER['SERVER_NAME'] : 'localhost';
+        $this->sendCommand("EHLO " . $serverName);
         
         // STARTTLS if port 587
         if ($this->port == 587) {
             $this->sendCommand("STARTTLS");
             // Enable crypto with the loose context
             stream_socket_enable_crypto($this->socket, true, STREAM_CRYPTO_METHOD_TLS_CLIENT);
-            $this->sendCommand("EHLO " . $_SERVER['SERVER_NAME']);
+            $this->sendCommand("EHLO " . $serverName);
         }
 
         // Auth
@@ -83,6 +84,9 @@ class SMTP {
         
         // Headers
         $headers = "MIME-Version: 1.0\r\n";
+        $headers .= "Date: " . date('r') . "\r\n";
+        $headers .= "Message-ID: <" . uniqid() . "@" . $serverName . ">\r\n";
+        $headers .= "X-Mailer: PHP/" . phpversion() . "\r\n";
         $headers .= "Content-Type: text/html; charset=UTF-8\r\n";
         $headers .= "From: $fromName <$fromEmail>\r\n";
         $headers .= "To: <$to>\r\n";
