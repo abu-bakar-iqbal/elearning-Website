@@ -48,9 +48,16 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                         <div class="alert alert-danger"><?php echo $error; ?></div>
                     <?php endif; ?>
 
-                    <div class="alert alert-info small">
-                        Testing? Check <code>email_log.txt</code> in the project folder for the code.
-                    </div>
+                    <?php if(isset($_SESSION['alert_message'])): ?>
+                        <div class="alert alert-<?php echo $_SESSION['alert_type']; ?> small alert-dismissible fade show" role="alert">
+                            <?php echo $_SESSION['alert_message']; ?>
+                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                        </div>
+                        <?php 
+                        unset($_SESSION['alert_message']); 
+                        unset($_SESSION['alert_type']);
+                        ?>
+                    <?php endif; ?>
 
                     <form method="POST" action="">
                         <input type="hidden" name="email" value="<?php echo htmlspecialchars($email); ?>">

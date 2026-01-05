@@ -23,6 +23,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 // Login Success
                 $_SESSION['user_id'] = $row['id'];
                 $_SESSION['username'] = $row['username'];
+                $_SESSION['email'] = $email;
                 echo "<script>window.location.href='index.php';</script>";
                 exit();
             } else {

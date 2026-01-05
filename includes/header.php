@@ -36,15 +36,28 @@ if (session_status() === PHP_SESSION_NONE) {
                     <li class="nav-item"><a class="nav-link" href="blog.php">Blog</a></li>
                     <li class="nav-item"><a class="nav-link" href="about.php">About</a></li>
                     
-                    <?php if (isset($_SESSION['user_id'])): ?>
+                    <?php if (isset($_SESSION['user_id'])): 
+                        // Use UI Avatars for dynamic profile image based on username
+                        $username_encoded = urlencode($_SESSION['username']);
+                        $avatar_url = "https://ui-avatars.com/api/?name=" . $username_encoded . "&background=ffd700&color=000&bold=true";
+                    ?>
                         <li class="nav-item dropdown ms-lg-3">
-                            <a class="nav-link dropdown-toggle text-gold fw-bold" href="#" role="button" data-bs-toggle="dropdown">
-                                <?php echo htmlspecialchars($_SESSION['username']); ?>
+                            <a class="nav-link dropdown-toggle d-flex align-items-center gap-2" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                <img src="<?php echo $avatar_url; ?>" alt="Avatar" class="rounded-circle border border-gold" width="35" height="35">
+                                <span class="text-white d-none d-lg-block"><?php echo htmlspecialchars($_SESSION['username']); ?></span>
                             </a>
-                            <ul class="dropdown-menu dropdown-menu-end bg-dark border-secondary">
-                                <li><a class="dropdown-item text-white" href="#">Profile</a></li>
+                            <ul class="dropdown-menu dropdown-menu-end bg-dark border-secondary shadow-lg">
+                                <li>
+                                    <div class="px-3 py-2 border-bottom border-secondary mb-2">
+                                        <p class="mb-0 text-white fw-bold"><?php echo htmlspecialchars($_SESSION['username']); ?></p>
+                                        <small class="text-muted d-block text-truncate" style="max-width: 150px;"><?php echo isset($_SESSION['email']) ? htmlspecialchars($_SESSION['email']) : 'Student'; ?></small>
+                                    </div>
+                                </li>
+                                <li><a class="dropdown-item text-white h-effect" href="profile.php"><i class="bi bi-person-fill me-2 text-gold"></i> My Profile</a></li>
+                                <li><a class="dropdown-item text-white h-effect" href="#"><i class="bi bi-gear-fill me-2 text-gold"></i> Settings</a></li>
+                                <li><a class="dropdown-item text-white h-effect" href="#"><i class="bi bi-question-circle-fill me-2 text-gold"></i> Help Center</a></li>
                                 <li><hr class="dropdown-divider bg-secondary"></li>
-                                <li><a class="dropdown-item text-danger" href="logout.php">Logout</a></li>
+                                <li><a class="dropdown-item text-danger h-effect" href="logout.php"><i class="bi bi-box-arrow-right me-2"></i> Logout</a></li>
                             </ul>
                         </li>
                     <?php else: ?>

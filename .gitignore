@@ -1,3 +1,5 @@
 email_log.txt
+email_error.log
+includes/mail_config.php
 __pycache__/
 *.pyc

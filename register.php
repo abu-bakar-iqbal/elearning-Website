@@ -34,16 +34,23 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
             if ($stmt->execute()) {
                 // Send Email (Simulated for Localhost)
+                // Send Email
+                include_once 'includes/mailer.php';
                 $subject = "Verify Your Elearn Account";
-                $message = "Your verification code is: " . $code;
-                $headers = "From: no-reply@elearn.com";
-
-                // Try sending mail (might fail on local without SMTP)
-                @mail($email, $subject, $message, $headers);
-
-                // Log code to file for testing purposes
-                $log_entry = date('Y-m-d H:i:s') . " - Email: $email - Code: $code" . PHP_EOL;
-                file_put_contents('email_log.txt', $log_entry, FILE_APPEND);
+                $message_body = "Thank you for joining Elearn! <br>Your verification code is: <strong>" . $code . "</strong>";
+                
+                if (send_email($email, $subject, $message_body)) {
+                    // Success - Email sent.
+                    $_SESSION['alert_type'] = 'success';
+                    $_SESSION['alert_message'] = 'Verification code sent to <strong>' . htmlspecialchars($email) . '</strong>';
+                } else {
+                    $error = "Warning: Could not send verification email. Please contact support.";
+                    // Only log to file if email failed, as a fallback for the user
+                    $log_entry = date('Y-m-d H:i:s') . " - Email: $email - Code: $code" . PHP_EOL;
+                    file_put_contents('email_log.txt', $log_entry, FILE_APPEND);
+                    $_SESSION['alert_type'] = 'warning';
+                    $_SESSION['alert_message'] = 'Could not send email automatically. Please check logs or contact admin.'; 
+                }
 
                 $_SESSION['verify_email'] = $email;
                 echo "<script>window.location.href='verify.php';</script>";
